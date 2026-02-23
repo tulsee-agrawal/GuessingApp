@@ -1,7 +1,7 @@
 /**
 * MAIN CLASS
 *
-* Use Case 5: Game Result Storage
+* Use Case 6: Game Controller
 *
 * This class coordinates the complete game flow
 * and persists the final result after completion.
@@ -13,13 +13,16 @@
 * -store game result at the end
 *
 *@author Develloper
-*@version 5.0
+*@version 6.0
 */
 import java.util.*;
 public class GuessingApp{
  public static void main(String[] args) throws InvalidInputException{
  System.out.println("Welcome to guessing app");
  Scanner sc=new Scanner(System.in);
+ boolean restart;
+ 
+ do{	 
  /*
  * Player name is captured once
  * and stored along with game results.
@@ -30,7 +33,6 @@ public class GuessingApp{
  
  GameConfig gc=new GameConfig();
  gc.showRules();
- 
  
  int attempts=0;
  int hintCount=1;
@@ -62,7 +64,6 @@ public class GuessingApp{
 		 win=true;
 		 System.out.println(result);
 		 attempts++;
-		 StorageService.saveResult(player,attempts,win);
 		 break;
 	 }
 	 
@@ -80,7 +81,17 @@ public class GuessingApp{
 	 }
 	 attempts++;
 	System.out.println(result);
+ }
+	/*
+	* final game result is persisited
+	* after the current session ends.
+	*/
 	StorageService.saveResult(player,attempts,win);
-}
+	
+	/*
+	*Player decides whether to* restart the gam eor exit.
+	*/
+	restart =GameController.restartGame(sc);
+ }while(restart);
 }
 }
