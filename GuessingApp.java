@@ -19,7 +19,7 @@ public class GuessingApp{
  
  Scanner sc=new Scanner(System.in);
  int attempts=0;
- 
+int hintCount=1;
  /*
  * Game loop runs until the player
  * exhausts the maximun attempts.
@@ -28,19 +28,26 @@ public class GuessingApp{
  while(attempts< gc.getMaxAttempts()){
 	 System.out.print("Enter your guess: ");
 	 int guess=sc.nextInt();
-	 attempts++;
+	
 	 
-	 String result = GuessValidator.ValidateGuess(guess,gc.getTargetNumber());
+	 String result = GuessValidator.ValidateGuess(guess,gc.getTargetNumber()); 
 	 
-	 System.out.println(result);
 	 
 	 /*
 	 * stop the loop immediately
 	 * if the correct number is guessed.
 	 */
 	 if("CORRECT".equals(result)){
+		 System.out.println(result);
 		 break;
 	 }
+	 if(hintCount<4){
+	 String hint = HintService.generateHint(gc.getTargetNumber(),hintCount);
+	 hintCount++;
+	 System.out.println(hint);
+	 
+	 }
+	System.out.println(result);
 }
 }
 }
