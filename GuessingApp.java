@@ -1,31 +1,46 @@
 /**
 * MAIN CLASS
 *
-* Use Case 4: Error handling & ValidationEvent
+* Use Case 5: Game Result Storage
 *
-* This class coordinates the game execution while ensuring
-* all user inputs are safely validated before processing.
+* This class coordinates the complete game flow
+* and persists the final result after completion.
 *
 * Responsibilities:
 * -Initialize game configuration
-* -Accept user inputs
-* -Validate input using ValidationSevice
-* -Handle game flow without crashing on valid input
+* -Accept and validate user inputs
+* -Generate hints when applicable
+* -store game result at the end
 *
 *@author Develloper
-*@version 4.0
+*@version 5.0
 */
 import java.util.*;
 public class GuessingApp{
  public static void main(String[] args) throws InvalidInputException{
  System.out.println("Welcome to guessing app");
+ Scanner sc=new Scanner(System.in);
+ /*
+ * Player name is captured once
+ * and stored along with game results.
+ */
+ 
+ System.out.print("Enter player name:");
+ String player= sc.nextLine();
  
  GameConfig gc=new GameConfig();
  gc.showRules();
  
- Scanner sc=new Scanner(System.in);
+ 
  int attempts=0;
-int hintCount=1;
+ int hintCount=1;
+ 
+ /*
+ * Tracks whether the player 
+ * successfully guessed the number.
+ */
+ boolean win=false;
+ 
  /*
  * Game loop runs until the player
  * exhausts the maximun attempts.
@@ -44,7 +59,10 @@ int hintCount=1;
 	 * if the correct number is guessed.
 	 */
 	 if("CORRECT".equals(result)){
+		 win=true;
 		 System.out.println(result);
+		 attempts++;
+		 StorageService.saveResult(player,attempts,win);
 		 break;
 	 }
 	 
@@ -60,7 +78,9 @@ int hintCount=1;
 	 System.out.println(hint);
 	 
 	 }
+	 attempts++;
 	System.out.println(result);
+	StorageService.saveResult(player,attempts,win);
 }
 }
 }
